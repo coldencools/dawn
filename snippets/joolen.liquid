@@ -1,0 +1,132 @@
+<link type="text/css" rel="stylesheet"
+      href="https://code.jquery.com/ui/1.12.0/themes/cupertino/jquery-ui.min.css" />
+
+<div class="joolen-point">
+    <!--  dialog用div要素 -->
+    <div id="joolenPointFrameWindow" class="joolen-point__main">
+        <div class="joolen-point__header">
+            <div class="joolne-point__title">ポイント</div>
+            <div id="joolenPointCloseModal" class="joolen-point__close-modal">×</div>
+        </div>
+        <iframe
+            id="joolenPointIframeDiv"
+            class="joolen-point__content"
+            width="320px"
+            height="400px"
+            src="{{ shop.url }}/apps/joolen{% if  customer.id %}/{{ customer.id }}?shop_domain={{ shop.permanent_domain }}" allow="clipboard-write self https://loy.joolenapps.com{% endif %}">
+        </iframe>
+    </div>
+    <button value="{{ customer.id }}" class="joolen-point__modal-open" id="joolenPointOpenModal">
+        クーポン発行
+    </button>
+</div>
+
+<style>
+    .joolen-point {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9;
+    }
+    .joolen-point__modal-open {
+        padding: 8px;
+        background: white;
+        border-radius: 8px;
+        font-weight: bold;
+        width: fit-content;
+    }
+    .joolen-point__main {
+        display: none;
+        background: white;
+        border-radius: 16px;
+        border: #333 1px solid;
+    }
+    .joolen-point__header {
+        display: flex;
+        padding: 8px;
+        border-bottom: solid 1px;
+        border-radius: 16px 16px 0 0;
+        color: #333;
+      	justify-content: space-between;
+    }
+    .joolen-point__title {
+        flex: 1;
+        font-weight: bold;
+    }
+    .joolen-point__close-modal {
+        width: 24px;
+        height: 24px;
+        font-size: 24px;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .joolen-point__content {
+        border: none;
+    }
+    .joolen-point *:focus {
+        outline: none;
+    }
+</style>
+
+<script>
+    const loadScript = function(url, callback){
+        const script = document.createElement("script")
+        script.type = "text/javascript";
+
+        if (script.readyState){  //IE
+            script.onreadystatechange = function(){
+                if (script.readyState == "loaded" ||
+                        script.readyState == "complete"){
+                    script.onreadystatechange = null;
+                    callback();
+                }
+            };
+        } else {  //Others
+            script.onload = function(){
+
+                const script1 = document.createElement("script")
+                script1.type = "text/javascript";
+
+                script1.onload = function(){
+                    callback();
+                }
+
+
+                script1.src = "//code.jquery.com/ui/1.12.0/jquery-ui.min.js";
+                document.getElementsByTagName("head")[0].appendChild(script1);
+
+
+
+            };
+        }
+
+        script.src = url;
+        document.getElementsByTagName("head")[0].appendChild(script);
+
+    };
+
+    const myAppJavaScript = function($){
+        $("#joolenPointOpenModal").click(function() {
+            $('#joolenPointFrameWindow').show()
+        })
+
+        $('#joolenPointCloseModal').click(function() {
+            $('#joolenPointFrameWindow').hide()
+        })
+    };
+
+    if ((typeof jQuery === 'undefined') || (parseFloat(jQuery.fn.jquery) < 3.0)) {
+        loadScript('//code.jquery.com/jquery-3.0.0.min.js', function(){
+            jQuery300 = jQuery.noConflict(true);
+            myAppJavaScript(jQuery300);
+        });
+    } else {
+        myAppJavaScript(jQuery);
+    }
+</script>
