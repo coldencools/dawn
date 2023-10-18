@@ -6,6 +6,8 @@
 <script
   defer
   src="https://shop.socialplus.jp/storefront/bundle.js"
+></script>
+<div
   class="socialplus-association"
   data-locale="{{ request.locale.iso_code }}"
   data-root-url="{{ request.locale.root_url }}"
@@ -13,4 +15,4 @@
   data-providers="{{ providers }}"
   data-callback-url="{{ callback_url }}"
   data-not-alert-when-dissociate-all-providers="{{ not_alert_when_dissociate_all_providers }}"
-></script>
+></div>
